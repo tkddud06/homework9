@@ -113,8 +113,9 @@ int initializeBST(Node** h) {
 
 	/* if the tree is not empty, then remove all allocated nodes from the tree*/
 	if(*h != NULL)
-		freeBST(*h);
-
+	{
+		freeBST(*h); ///////////////////////////////////////////////// ¿À·ù ¹ß»ıÇÔ. freeBST¿¡ ¹®Á¦ ÀÖ´Â ¸ğ¾ç.
+	}
 	/* create a head node */
 	*h = (Node*)malloc(sizeof(Node));
 	(*h)->left = NULL;	/* root */
@@ -127,35 +128,38 @@ int initializeBST(Node** h) {
 
 void inorderTraversal(Node* ptr)
 {
-	if(ptr == NULL)
+	if(ptr == NULL) // ³¡±îÁö Å½»öÇÑ °æ¿ì
 	{
 		return;
 	}
 	inorderTraversal(ptr->left);
 	printf("%d ", ptr->key);
 	inorderTraversal(ptr->right);
+	// ÁßÀ§ÀÌ¹Ç·Î, ¿ŞÂÊÀ¸·Î ¸ÕÀú ÀÌµ¿, °¡¿îµ¥ ³ëµå È®ÀÎ, ÀÌÈÄ ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿ÇÑ´Ù.
 }
 
 void preorderTraversal(Node* ptr)
 {
-	if(ptr == NULL)
+	if(ptr == NULL) // ³¡±îÁö Å½»öÇÑ °æ¿ì
 	{
 		return;
 	}
 	printf("%d ", ptr->key);
 	preorderTraversal(ptr->left);
 	preorderTraversal(ptr->right);
+	// ÀüÀ§ÀÌ¹Ç·Î, °¡¿îµ¥ ³ëµå È®ÀÎ, ÀÌÈÄ ¿ŞÂÊÀ¸·Î ÀÌµ¿, ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿ÇÑ´Ù.
 }
 
 void postorderTraversal(Node* ptr)
 {
-	if(ptr == NULL)
+	if(ptr == NULL) // ³¡±îÁö Å½»öÇÑ °æ¿ì
 	{
 		return;
 	}
 	postorderTraversal(ptr->left);
 	postorderTraversal(ptr->right);
 	printf("%d ", ptr->key);
+	// ÈÄÀ§ÀÌ¹Ç·Î, ¿ŞÂÊÀ¸·Î ¸ÕÀú ÀÌµ¿, ÀÌÈÄ ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿, ÀÌÈÄ °¡¿îµ¥ ³ëµå¸¦ È®ÀÎÇÑ´Ù.
 }
 
 
@@ -163,39 +167,41 @@ int insert(Node* head, int key)
 {
 	Node* ins = head->left;
 	Node* prev = head;
-	if(ins == NULL) // ì²« ë…¸ë“œì¼ ê²½ìš°
+	if(ins == NULL) // Ã¹ ³ëµåÀÏ °æ¿ì(ºó Æ®¸®¿¡ ³Ö´Â °æ¿ì)
 	{
 		head->left = (Node*)malloc(sizeof(Node));
 		head->left->left = NULL;
 		head->left->right = NULL;
 		head->left->key = key;
-		return 1;
+		return 0;
 	}
 
-	// ê·¸ë ‡ì§€ ì•Šì€ ë‚˜ë¨¸ì§€ ê²½ìš°
+	// ±×·¸Áö ¾ÊÀº ³ª¸ÓÁö °æ¿ì
 	while(1)
 	{	
 		prev = ins;
-		if(key < ins->key) // í‚¤ê°€ í˜„ ë…¸ë“œë³´ë‹¤ ì‘ì€ ê²½ìš°
+		if(key < ins->key) // ³ÖÀ» ³ëµåÀÇ Å°°¡ Çö ³ëµåº¸´Ù ÀÛÀº °æ¿ì
 		{
-			ins = ins->left; // ë„£ì„ ìœ„ì¹˜ëŠ” ì™¼ìª½ ìì‹ ë…¸ë“œ
-			if(ins == NULL) // ë„£ì„ ìë¦¬ê°€ ë˜ì—ˆë‹¤ë©´(ë”ì´ìƒ ë¹„êµí•  ê²Œ ì—†ë‹¤ë©´)
+			ins = ins->left; // ³ÖÀ» À§Ä¡´Â ¿ŞÂÊ ÀÚ½Ä ³ëµåÂÊÀÌ µÉ °Í.
+			if(ins == NULL) // ³ÖÀ» ÀÚ¸®°¡ µÇ¾ú´Ù¸é(´õÀÌ»ó ºñ±³ÇÒ °Ô ¾ø´Ù¸é)
 			{
-				prev->left = (Node*)malloc(sizeof(Node)); // ins ë…¸ë“œì˜ ë¶€ëª¨ ë…¸ë“œë¥¼ ê¸°ì¤€ìœ¼ë¡œ, ì™¼ìª½ì— ì‚½ì…
+				prev->left = (Node*)malloc(sizeof(Node)); // ins ³ëµåÀÇ ºÎ¸ğ ³ëµå¸¦ ±âÁØÀ¸·Î, ¿ŞÂÊ¿¡ »ğÀÔ
 				prev->left->left = NULL;
 				prev->left->right = NULL;
 				prev->left->key = key;
+				return 0;
 			}
 		}
-		else // ë‚˜ë¨¸ì§€ ê²½ìš°
+		else // ³ª¸ÓÁö °æ¿ì(³ÖÀ» ³ëµåÀÇ Å°°¡ Çö ³ëµåº¸´Ù Å« °æ¿ì)
 		{
-			ins = ins->right; // ë„£ì„ ìœ„ì¹˜ëŠ” ì˜¤ë¥¸ìª½ ìì‹ ë…¸ë“œ
-			if(ins == NULL) // ë„£ì„ ìë¦¬ê°€ ë˜ì—ˆë‹¤ë©´(ë”ì´ìƒ ë¹„êµí•  ê²Œ ì—†ë‹¤ë©´)
+			ins = ins->right; // ³ÖÀ» À§Ä¡´Â ¿À¸¥ÂÊ ÀÚ½Ä ³ëµåÂÊÀÌ µÉ °Í.
+			if(ins == NULL) // ³ÖÀ» ÀÚ¸®°¡ µÇ¾ú´Ù¸é(´õÀÌ»ó ºñ±³ÇÒ °Ô ¾ø´Ù¸é)
 			{
-				prev->right = (Node*)malloc(sizeof(Node)); // ins ë…¸ë“œì˜ ë¶€ëª¨ ë…¸ë“œë¥¼ ê¸°ì¤€ìœ¼ë¡œ, ì˜¤ë¥¸ìª½ì— ì‚½ì…
+				prev->right = (Node*)malloc(sizeof(Node)); // ins ³ëµåÀÇ ºÎ¸ğ ³ëµå¸¦ ±âÁØÀ¸·Î, ¿À¸¥ÂÊ¿¡ »ğÀÔ
 				prev->right->left = NULL;
 				prev->right->right = NULL;
 				prev->right->key = key;
+				return 0;
 			}
 		}
 	}
@@ -203,73 +209,151 @@ int insert(Node* head, int key)
 
 int deleteLeafNode(Node* head, int key)
 {
-	Node* del = head->left;
-	prev = head;
+	Node* prev = head;
 
-	if(del == NULL)
+	if(prev->left == NULL) // ºó Æ®¸®¶ó¸é
 	{
-		printf("ë¹ˆ ë¦¬ìŠ¤íŠ¸ì…ë‹ˆë‹¤\n");
+		printf("ºó Æ®¸®ÀÔ´Ï´Ù\n");
 		return -1;
 	}
-
-	while(del != NULL)
+	if(prev->left->key == key) // Ã¹¹øÂ° ³ëµå°¡ Áö¿ï ³ëµåÀÎ °æ¿ì
 	{
-		prev = del;
-
-		if(key < ins->key) // í‚¤ê°€ í˜„ ë…¸ë“œë³´ë‹¤ ì‘ì€ ê²½ìš°
+		if(prev->left->left == NULL && prev->left->right == NULL) // ¸®ÇÁ ³ëµåÀÎÁö Ã¼Å©
 		{
-			del = del->left;
-			if(key == del->key)
-		{
-			if(del->left != NULL || del->right != NULL)
-			{
-				printf("ë¦¬í”„ ë…¸ë“œê°€ ì•„ë‹™ë‹ˆë‹¤");
-				return -1;
-			}
-			
-			free(del);
+			free(prev->left);
 			prev->left = NULL;
-			return 0;
+			return 0; // Áö¿ì°í, ÀÌÀü ³ëµåÀÇ left ¸µÅ©(Çì´õÀÇ left ¸µÅ©)¸¦ NULL·Î ¼³Á¤
 		}
-		}
-		else // ë‚˜ë¨¸ì§€ ê²½ìš°
+		else // ¸®ÇÁ ³ëµå°¡ ¾Æ´Ï¶ó¸é
 		{
-			del = del->right;
-			if(key == del->key)
-		{
-			if(del->left != NULL || del->right != NULL)
-			{
-				printf("ë¦¬í”„ ë…¸ë“œê°€ ì•„ë‹™ë‹ˆë‹¤");
-				return -1;
-			}
-			
-			free(del);
-			prev->right = NULL;
-			return 0;
+			printf("¸®ÇÁ ³ëµå°¡ ¾Æ´Õ´Ï´Ù");
+			return -1;
 		}
-		}
-
-
 	}
+
+	prev = prev->left;
+
+	while(prev != NULL) // ³¡±îÁö Å½»öÇÒ ¶§±îÁö
+	{
+		if(prev->key > key) // Áö¿ï Å°ÀÇ ³ëµå°¡ ºÎ¸ğ ³ëµåÀÇ Å°º¸´Ù ¿ŞÂÊ¿¡ ÀÖÀ» °æ¿ì
+		{
+			if(prev->left == NULL) // ´õÀÌ»ó ¼­Ä¡ÇÒ ¼ö ÀÖ´Â ÇØ´ç ÀÚ½ÄÀÌ ¾øÀ» °æ¿ì
+			{
+				break;
+			}
+			if(prev->left->key == key) // ¹Ù·Î ¿ŞÂÊ ÀÚ½ÄÀÌ Áö¿ï ³ëµåÀÏ °æ¿ì
+			{
+				if(prev->left->left == NULL && prev->left->right == NULL) // ¸®ÇÁ ³ëµå¶ó¸é
+				{
+					free(prev->left);
+					prev->left = NULL;
+					return 0; // Áö¿ì°í, ÀÌÀü ³ëµåÀÇ left ¸µÅ©¸¦ NULL·Î ¼³Á¤
+				}
+				else // ¸®ÇÁ ³ëµå°¡ ¾Æ´Ï¶ó¸é
+				{
+					printf("¸®ÇÁ ³ëµå°¡ ¾Æ´Õ´Ï´Ù");
+					return -1;
+				}
+			}
+			else // ÇØ´ç ÀÚ½ÄÀÌ Áö¿ï ³ëµå°¡ ¾Æ´Ñ °æ¿ì ÇØ´ç ¿ŞÂÊ ³ëµå·Î ³»·Á°¨
+			{
+				prev = prev->left;
+			}
+		}
+		else // ¹İ´ë °æ¿ì(Áö¿ï Å°ÀÇ ³ëµå°¡ ºÎ¸ğ ³ëµåÀÇ Å°º¸´Ù ¿À¸¥ÂÊ¿¡ ÀÖÀ» °æ¿ì)
+		{
+			if(prev->right == NULL) // ´õÀÌ»ó ¼­Ä¡ÇÒ ¼ö ÀÖ´Â ÇØ´ç ÀÚ½ÄÀÌ ¾øÀ» °æ¿ì
+			{
+				break;
+			}
+			if(prev->right->key == key) // ¹Ù·Î ¿À¸¥ÂÊ ÀÚ½ÄÀÌ Áö¿ï ³ëµåÀÏ °æ¿ì
+			{
+				if(prev->right->left == NULL && prev->right->right == NULL) // ¸®ÇÁ ³ëµåÀÎÁö È®ÀÎ
+				{
+					free(prev->right);
+					prev->right = NULL;
+					return 0; // Áö¿ì°í, ÀÌÀü ³ëµåÀÇ right ¸µÅ©¸¦ NULL·Î ¼³Á¤
+				}
+				else // ¸®ÇÁ ³ëµå°¡ ¾Æ´Ï¶ó¸é
+				{
+					printf("¸®ÇÁ ³ëµå°¡ ¾Æ´Õ´Ï´Ù");
+					return -1;
+				}
+			}
+			else // ÇØ´ç ÀÚ½ÄÀÌ Áö¿ï ³ëµå°¡ ¾Æ´Ñ °æ¿ì ÇØ´ç ¿À¸¥ÂÊ ³ëµå·Î ³»·Á°¨
+			{
+				prev = prev->right;
+			}
+		}
+	}
+
+	printf("Å½»ö ½ÇÆĞ");
+	return -1;
 }
 
 Node* searchRecursive(Node* ptr, int key)
 {
-	
+	if(ptr == NULL) // ºó Æ®¸®ÀÎ °æ¿ì¿Í, ¸®ÇÁ ³ëµå¸¦ Æ÷ÇÔÇÏ¿© ³¡±îÁö Å½»öÇÏ¿´Áö¸¸ ¸øÃ£Àº °æ¿ì
+	{
+		return NULL;
+	}
+	if(ptr->key == key) // Å°¸¦ Ã£¾Ò´Ù¸é
+	{
+		return ptr; // ÇØ´ç ³ëµå ¸®ÅÏ
+	}
+	else if(ptr->key > key) // ÀÔ·Â¹ŞÀº Å°º¸´Ù ÇöÀç ³ëµå Å°°¡ Å©´Ù¸é ¿ŞÂÊÀ¸·Î ³»·Á°¨
+	{
+		return searchRecursive(ptr->left,key);
+	}
+	else // ÀÔ·Â¹ŞÀº Å°º¸´Ù ÇöÀç ³ëµå Å°°¡ ÀÛ´Ù¸é ¿À¸¥ÂÊÂÊÀ¸·Î ³»·Á°¨
+	{
+		return searchRecursive(ptr->right,key);
+	}
 }
 
 Node* searchIterative(Node* head, int key)
 {
+	Node* find = head->left; // Ã£À» ³ëµå¸¦ ³ªÅ¸³¾ º¯¼ö »ı¼º
+	if(find == NULL) // ºó Æ®¸®¶ó¸é
+	{
+		return NULL;
+	}
+
+	while(find != NULL) // ¸®ÇÁ ³ëµå¸¦ Æ÷ÇÔÇÏ¿© ³¡±îÁö Å½»öÇÒ ¶§±îÁö ÁøÇà
+	{
+		if(find->key == key) // Å°¸¦ Ã£¾Ò´Ù¸é
+		{
+			return find; // ÇØ´ç ³ëµå ¸®ÅÏ
+		}
+		else if(find->key > key) // ÀÔ·Â¹ŞÀº Å°º¸´Ù ÇöÀç ³ëµå Å°°¡ Å©´Ù¸é ¿ŞÂÊÀ¸·Î ³»·Á°¨
+		{
+			find = find->left;
+		}
+		else // ÀÔ·Â¹ŞÀº Å°º¸´Ù ÇöÀç ³ëµå Å°°¡ ÀÛ´Ù¸é ¿À¸¥ÂÊÂÊÀ¸·Î ³»·Á°¨
+		{
+			find = find->right;
+		}
+	}
+
+	return NULL; // Ã£±â ½ÇÆĞÇÑ °æ¿ì
 
 }
 
 
-int freeBST(Node* head)
+int freeBST(Node* head) // ÈÄÀ§Å½»ö(?)À» ÀÀ¿ë
 {
-
+	if (head == NULL) // ¸®ÇÁ ³ëµåÀÇ ÀÚ½Ä ³ëµå, Áï NULL¿¡ Á¢±ÙµÈ »óÅÂ
+	{
+		return 0;
+	}
+	if (head->right == head) // Ã¹ ÇìµåÀÇ right´Â head ÀÚ±âÀÚ½ÅÀ» °¡¸£Å°¹Ç·Î
+	{
+		freeBST(head->left);
+		free(head);
+		return 0;
+	}
+	freeBST(head->left); // ¿ŞÂÊ Å½»ö
+	freeBST(head->right); // ¿À¸¥ÂÊ Å½»ö
+	free(head); // °¡¿îµ¥ ³ëµå »èÁ¦
+	return 0;
 }
-
-
-
-
-
