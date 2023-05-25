@@ -50,7 +50,7 @@ int main()
 		printf(" Preorder Traversal   = p      Search Node Iteratively      = f\n");
 		printf(" Postorder Traversal  = t      Quit                         = q\n");
 		printf("----------------------------------------------------------------\n");
-
+		printf("[--------------  [최상영]  	[2022041062]  --------------]\n");
 		printf("Command = ");
 		scanf(" %c", &command);
 
@@ -114,7 +114,7 @@ int initializeBST(Node** h) {
 	/* if the tree is not empty, then remove all allocated nodes from the tree*/
 	if(*h != NULL)
 	{
-		freeBST(*h); ///////////////////////////////////////////////// 오류 발생함. freeBST에 문제 있는 모양.
+		freeBST(*h); 
 	}
 	/* create a head node */
 	*h = (Node*)malloc(sizeof(Node));
@@ -133,9 +133,9 @@ void inorderTraversal(Node* ptr)
 		return;
 	}
 	inorderTraversal(ptr->left);
-	printf("%d ", ptr->key);
+	printf(" [%d] ", ptr->key);
 	inorderTraversal(ptr->right);
-	// 중위이므로, 왼쪽으로 먼저 이동, 가운데 노드 확인, 이후 오른쪽으로 이동한다.
+	// 중위순회이므로, 왼쪽으로 먼저 이동, 가운데 노드 확인, 이후 오른쪽으로 이동한다.
 }
 
 void preorderTraversal(Node* ptr)
@@ -144,10 +144,10 @@ void preorderTraversal(Node* ptr)
 	{
 		return;
 	}
-	printf("%d ", ptr->key);
+	printf(" [%d] ", ptr->key);
 	preorderTraversal(ptr->left);
 	preorderTraversal(ptr->right);
-	// 전위이므로, 가운데 노드 확인, 이후 왼쪽으로 이동, 오른쪽으로 이동한다.
+	// 전위순회이므로, 가운데 노드 확인, 이후 왼쪽으로 이동, 오른쪽으로 이동한다.
 }
 
 void postorderTraversal(Node* ptr)
@@ -158,8 +158,8 @@ void postorderTraversal(Node* ptr)
 	}
 	postorderTraversal(ptr->left);
 	postorderTraversal(ptr->right);
-	printf("%d ", ptr->key);
-	// 후위이므로, 왼쪽으로 먼저 이동, 이후 오른쪽으로 이동, 이후 가운데 노드를 확인한다.
+	printf(" [%d] ", ptr->key);
+	// 후위순회이므로, 왼쪽으로 먼저 이동, 이후 오른쪽으로 이동, 이후 가운데 노드를 확인한다.
 }
 
 
@@ -211,9 +211,14 @@ int deleteLeafNode(Node* head, int key)
 {
 	Node* prev = head;
 
+	if (head == NULL) { // 초기화가 안된 상태라면
+		printf("\n Nothing to delete!!\n");
+		return -1;
+	}
+
 	if(prev->left == NULL) // 빈 트리라면
 	{
-		printf("빈 트리입니다\n");
+		printf("\n Nothing to delete!!\n");
 		return -1;
 	}
 	if(prev->left->key == key) // 첫번째 노드가 지울 노드인 경우
@@ -226,7 +231,7 @@ int deleteLeafNode(Node* head, int key)
 		}
 		else // 리프 노드가 아니라면
 		{
-			printf("리프 노드가 아닙니다");
+			printf("the node [%d] is not a leaf \n", prev->left->key);
 			return -1;
 		}
 	}
@@ -251,7 +256,7 @@ int deleteLeafNode(Node* head, int key)
 				}
 				else // 리프 노드가 아니라면
 				{
-					printf("리프 노드가 아닙니다");
+					printf("the node [%d] is not a leaf \n", prev->left->key);
 					return -1;
 				}
 			}
@@ -276,7 +281,7 @@ int deleteLeafNode(Node* head, int key)
 				}
 				else // 리프 노드가 아니라면
 				{
-					printf("리프 노드가 아닙니다");
+					printf("the node [%d] is not a leaf \n", prev->right->key);
 					return -1;
 				}
 			}
@@ -287,7 +292,7 @@ int deleteLeafNode(Node* head, int key)
 		}
 	}
 
-	printf("탐색 실패");
+	printf("Cannot find the node for key [%d]\n ", key);
 	return -1;
 }
 
@@ -340,7 +345,7 @@ Node* searchIterative(Node* head, int key)
 }
 
 
-int freeBST(Node* head) // 후위탐색(?)을 응용
+int freeBST(Node* head) // 후위순회를 응용
 {
 	if (head == NULL) // 리프 노드의 자식 노드, 즉 NULL에 접근된 상태
 	{
